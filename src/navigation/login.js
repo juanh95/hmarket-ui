@@ -28,7 +28,7 @@ export default class LoginContainer extends React.Component{
       alert('Invalid Username and password combination')
     }
 
-    this.props.setUser(response.data.userId, response.data.jwt, response.data.cartId)
+    this.props.setUser(response.data.userId, response.data.cartId)
   }
 
   handleUsernameInputOnChange(event) {

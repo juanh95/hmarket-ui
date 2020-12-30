@@ -2,6 +2,7 @@ import React from 'react'
 import CustomerContainer from '../customer/customer'
 import LoginContainer from '../navigation/login'
 import StoreContainer from '../store/store'
+import Cookies from 'js-cookie'
 
 export default class MainPage extends React.Component{
   constructor(props){
@@ -9,19 +10,29 @@ export default class MainPage extends React.Component{
     this.state ={
       userId: '',
       cartId: '',
-      jwt: '',
       isLoggedIn: false 
     }
     this.setUser = this.setUser.bind(this)
   }
   
-  async setUser(uid, token, cid){
+  async setUser(uid, cid){
     this.setState({
       userId: uid,
-      jwt: token,
       cartId: cid,
       isLoggedIn: true
     })
+    Cookies.set('sessionState', this.state)
+  }
+
+  componentDidMount() {
+    var session = JSON.parse(Cookies.get('sessionState'))
+    if(session){
+      this.setState({
+        userId: session.userId,
+        cartId: session.cartId, 
+        isLoggedIn: session.isLoggedIn
+      })
+    } 
   }
 
   render(){
