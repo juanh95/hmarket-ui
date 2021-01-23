@@ -25,14 +25,18 @@ export default class MainPage extends React.Component{
   }
 
   componentDidMount() {
-    var session = JSON.parse(Cookies.get('sessionState'))
-    if(session){
-      this.setState({
-        userId: session.userId,
-        cartId: session.cartId, 
-        isLoggedIn: session.isLoggedIn
-      })
-    } 
+    try {
+      var session = JSON.parse(Cookies.get('sessionState'))
+      if(session){
+        this.setState({
+          userId: session.userId,
+          cartId: session.cartId, 
+          isLoggedIn: session.isLoggedIn
+        })
+      } 
+    } catch (error) {
+      console.log("No session data");
+    }
   }
 
   render(){

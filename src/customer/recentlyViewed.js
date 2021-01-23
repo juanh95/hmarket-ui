@@ -23,7 +23,7 @@ export default class RecentViewContainer extends React.Component{
 
   displayRecentlyViewed() {
     try {
-      {this.state.recentlyViewedItems.map(item => {
+      this.state.recentlyViewedItems.map(item => {
           return (
             <div>
               <li style={{marginTop: '10px'}} key={item._id}>
@@ -31,7 +31,7 @@ export default class RecentViewContainer extends React.Component{
               </li>
             </div>
           )
-      })}
+      })
     } catch (error) {
       return(<li>No Recently Viewed Items</li>)
     }
