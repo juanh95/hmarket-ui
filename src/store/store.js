@@ -76,8 +76,9 @@ export default class StoreContainer extends React.Component{
   }
 
   async handleAddToCart(itemId){
-    const updatedCart = await axios.post(`http://localhost:8080/cart/${this.props.cartId}/cartItem/${itemId}`)
+    await axios.post(`http://localhost:8080/cart/${this.props.cartId}/cartItem/${itemId}`)
     await this.props.loadCartItemsFromRESTAPI()
+    this.props.showCart()
   }
 
   render(){

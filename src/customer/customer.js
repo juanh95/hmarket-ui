@@ -1,8 +1,10 @@
 import React from 'react'
 import axios from 'axios'
-import CartContainer from './cart'
+import Cart from './cart'
 import RecentlyViewedContainer from './recentlyViewed'
 import StoreContainer from '../store/store'
+import SlidingPane from "react-sliding-pane"
+import "react-sliding-pane/dist/react-sliding-pane.css"
 
 export default class CustomerContainer extends React.Component{
   constructor(props){
@@ -12,10 +14,12 @@ export default class CustomerContainer extends React.Component{
       cartId: this.props.cartId,
       itemToAdd: {},
       userId: this.props.userId,
-      total: 0
+      total: 0,
+      isPaneOpen: false
     }
     this.handleRemoveFromCart = this.handleRemoveFromCart.bind(this)
     this.loadCartItemsFromRESTAPI = this.loadCartItemsFromRESTAPI.bind(this)
+    this.showCart = this.showCart.bind(this)
   }
 
   async componentDidMount() {
@@ -23,7 +27,7 @@ export default class CustomerContainer extends React.Component{
   }
 
   async handleRemoveFromCart(itemId){
-    const updatedCart = await axios.delete(`http://localhost:8080/cart/${this.state.cartId}/cartItem/${itemId}`)
+    await axios.delete(`http://localhost:8080/cart/${this.state.cartId}/cartItem/${itemId}`)
     await this.loadCartItemsFromRESTAPI()
   }
 
@@ -43,26 +47,45 @@ export default class CustomerContainer extends React.Component{
       total: tempTotal.toFixed(2)
     })
   }
+
+  showCart() {
+    this.setState({
+      isPaneOpen: this.state.isPaneOpen ? false : true
+    })
+  }
     
   render() {
     return(
       <div>
         <section style={{display: 'table', width: '100%'}}>
-          {/* the left side of the section 'recently viewed' goes here*/}
           <div style={{display: 'table-cell'}}>
             <RecentlyViewedContainer/>
           </div>
-          {/* the right side of the section 'cart' goes here*/}
           <div style={{display: 'table-cell'}}>
-            <CartContainer 
-              cart={this.state.cart}
-              cartId={this.state.cartId}
-              cartTotal={this.state.total}
-              handleRemoveFromCart={this.handleRemoveFromCart}
-            />
+          <SlidingPane 
+            isOpen={this.state.isPaneOpen}
+            title="My Cart"
+            subtitle={this.state.total}
+            width="300px"
+            onRequestClose={() => {
+              this.setState({isPaneOpen: false})
+            }}>  
+              <Cart
+                cart={this.state.cart}
+                cartId={this.state.cartId}
+                cartTotal={this.state.total}
+                handleRemoveFromCart={this.handleRemoveFromCart}/>
+            </SlidingPane>
+            <button onClick={this.showCart}>
+            Show Cart
+            </button>
           </div>
         </section>
-        <StoreContainer isLoggedIn={this.props.isLoggedIn} cartId={this.props.cartId} loadCartItemsFromRESTAPI={this.loadCartItemsFromRESTAPI}/>
+        <StoreContainer 
+          isLoggedIn={this.props.isLoggedIn} 
+          cartId={this.props.cartId} 
+          loadCartItemsFromRESTAPI={this.loadCartItemsFromRESTAPI}
+          showCart={this.showCart}/>
       </div>
     )
   }

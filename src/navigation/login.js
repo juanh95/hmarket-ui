@@ -24,11 +24,10 @@ export default class LoginContainer extends React.Component{
 
     try {
       response = await axios.post('http://localhost:8080/user/login', loginBody)
+      this.props.setUser(response.data.userId, response.data.cartId)
     } catch (e) {
       alert('Invalid Username and password combination')
     }
-
-    this.props.setUser(response.data.userId, response.data.cartId)
   }
 
   handleUsernameInputOnChange(event) {
