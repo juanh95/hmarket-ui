@@ -3,6 +3,11 @@ import CustomerContainer from '../customer/customer'
 import LoginContainer from '../navigation/login'
 import StoreContainer from '../store/store'
 import Cookies from 'js-cookie'
+import Container from '@material-ui/core/Container'
+import AppBar from '@material-ui/core/AppBar'
+import ToolBar from '@material-ui/core/Toolbar'
+import Typography from '@material-ui/core/Typography'
+import InputBase from '@material-ui/core/InputBase'
 
 export default class MainPage extends React.Component{
   constructor(props){
@@ -42,13 +47,28 @@ export default class MainPage extends React.Component{
   render(){
     return(
       <div>
-        <h1>Namazon Store</h1>
+        <AppBar position='static'>
+          <ToolBar>
+          <InputBase
+            placeholder="Search Products…"
+            inputProps={{ 'aria-label': 'search' }}
+          />
+          </ToolBar>
+          
+          <Typography variant='h4' align='center'>
+            Namazon Store
+          </Typography>
+        </AppBar>
         {this.state.isLoggedIn ? 
         <CustomerContainer 
           userId={this.state.userId} 
           cartId={this.state.cartId} 
           isLoggedIn={this.state.isLoggedIn}/> : <LoginContainer setUser={this.setUser}/>}
-        {this.state.isLoggedIn ? null : <StoreContainer isLoggedIn={this.state.isLoggedIn}/>}
+        {this.state.isLoggedIn ? null : 
+          <Container maxWidth='xs'>
+            <StoreContainer isLoggedIn={this.state.isLoggedIn}/>
+          </Container>
+        }  
       </div>
     )
   }    

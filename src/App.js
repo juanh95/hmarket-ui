@@ -1,11 +1,24 @@
+import React, {useState, useEffect} from 'react'
 import './App.css';
-import MainPage from './navigation/mainPage'
-function App() {
-  return (
-    <div className="App">
-      <MainPage />
-    </div>
-  );
+import Home from './Home'
+import Account from './Account'
+import {
+  Switch,
+  Route,
+  Link
+} from "react-router-dom"
+
+const App = () => {
+  return(
+    <Switch>
+      <Route path="/register">
+        <Account />
+      </Route>
+      <Route path="/">
+        <Home />
+      </Route>
+    </Switch>
+  )
 }
 
 export default App;

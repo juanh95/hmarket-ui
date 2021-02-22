@@ -62,14 +62,14 @@ export default class CustomerContainer extends React.Component{
             <RecentlyViewedContainer/>
           </div>
           <div style={{display: 'table-cell'}}>
-          <SlidingPane 
-            isOpen={this.state.isPaneOpen}
-            title="My Cart"
-            subtitle={this.state.total}
-            width="300px"
-            onRequestClose={() => {
-              this.setState({isPaneOpen: false})
-            }}>  
+            <SlidingPane 
+              isOpen={this.state.isPaneOpen}
+              title="My Cart"
+              subtitle={this.state.total}
+              width="300px"
+              onRequestClose={() => {
+                this.setState({isPaneOpen: false})
+              }}>  
               <Cart
                 cart={this.state.cart}
                 cartId={this.state.cartId}
